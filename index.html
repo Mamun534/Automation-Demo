@@ -299,7 +299,7 @@
   function deleteProduct(i){ products.splice(i,1); saveAll(); openAdmin(); }
   function closeAdminModal(){ document.getElementById('adminModal').style.display='none'; }
 
-  // Customer modal and data
+// Customer modal and data
   function editCustomer(page,i){ let c=pageData[page][i]; editingIndex=i; document.getElementById('customerModalTitle').innerText='Edit Customer'; document.getElementById('custName').value=c.name; document.getElementById('custEmail').value=c.email; document.getElementById('custGroup').value=c.group; document.getElementById('custStatus').value=c.status; document.getElementById('custDate').value=c.date; document.getElementById('customerModal').style.display='block'; }
   function addCustomer(){ editingIndex=null; document.getElementById('customerModalTitle').innerText='Add Customer'; document.getElementById('custName').value=''; document.getElementById('custEmail').value=''; document.getElementById('custGroup').value=''; document.getElementById('custStatus').value=''; document.getElementById('custDate').value=''; document.getElementById('customerModal').style.display='block'; }
   function closeCustomerModal(){ document.getElementById('customerModal').style.display='none'; }
