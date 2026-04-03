@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Automation Demo</title>
+<title> Automation Demo </title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
   body {
@@ -136,9 +136,9 @@
   <span onclick="adminLoginPrompt()">Admin Panel</span>
 </div>
 
-<div class="banner">
+<div class="banner" id="banner">
   <div class="slider">
-  <img src="https://picsum.photos/300/180?1">
+    <img src="https://picsum.photos/300/180?1">
     <img src="https://picsum.photos/300/180?2">
     <img src="https://picsum.photos/300/180?3">
     <img src="https://picsum.photos/300/180?4">
@@ -242,7 +242,11 @@
   }
 
   // Functions for home, categories, and cart
-  function goHome() { render(products); renderPagination(); }
+  function goHome() { 
+    document.getElementById('banner').style.display='flex'; // show slider on home
+    render(products); 
+    renderPagination(); 
+  }
   function render(list) {
     let html = '';
     list.forEach(p => {
@@ -275,7 +279,7 @@
   function adminLoginPrompt() {
     let user=prompt("Enter Admin Username:");
     let pass=prompt("Enter Admin Password:");
-    if(user==='Mamun' && pass==='534120'){ openAdmin(); }
+    if(user==='mamun' && pass==='5634120'){ openAdmin(); }
     else{ alert("Invalid credentials!"); }
   }
   function openAdmin() {
@@ -299,7 +303,7 @@
   function deleteProduct(i){ products.splice(i,1); saveAll(); openAdmin(); }
   function closeAdminModal(){ document.getElementById('adminModal').style.display='none'; }
 
-// Customer modal and data
+  // Customer modal and data
   function editCustomer(page,i){ let c=pageData[page][i]; editingIndex=i; document.getElementById('customerModalTitle').innerText='Edit Customer'; document.getElementById('custName').value=c.name; document.getElementById('custEmail').value=c.email; document.getElementById('custGroup').value=c.group; document.getElementById('custStatus').value=c.status; document.getElementById('custDate').value=c.date; document.getElementById('customerModal').style.display='block'; }
   function addCustomer(){ editingIndex=null; document.getElementById('customerModalTitle').innerText='Add Customer'; document.getElementById('custName').value=''; document.getElementById('custEmail').value=''; document.getElementById('custGroup').value=''; document.getElementById('custStatus').value=''; document.getElementById('custDate').value=''; document.getElementById('customerModal').style.display='block'; }
   function closeCustomerModal(){ document.getElementById('customerModal').style.display='none'; }
@@ -318,10 +322,16 @@
   // Pagination
   function renderPagination(){ let container=document.getElementById('pagination'); container.innerHTML=''; for(let i=1;i<=10;i++){ let btn=document.createElement('button'); btn.innerText=i; btn.onclick=()=>{ currentPage=i; renderPageData(i); }; container.appendChild(btn); } }
   for(let p=1;p<=10;p++){ if(!pageData[p]){ pageData[p]=[]; for(let i=1;i<=5;i++){ pageData[p].push({name:`Customer ${p}-${i}`,email:`cust${p}${i}@example.com`,group:`Group ${i}`,status:'Active',date:'2026-04-01'}); } } }
-  function renderPageData(page){ let html=`<div class='table-container'><h3>Page ${page} Data</h3><button class='btn' onclick='addCustomer()'>Add Customer</button><table><tr><th>Name</th><th>Email</th><th>Customer Groups</th><th>Status</th><th>Date Added</th><th>Action</th></tr>`; pageData[page].forEach((c,i)=>{ html+=`<tr><td>${c.name}</td><td>${c.email}</td><td>${c.group}</td><td>${c.status}</td><td>${c.date}</td><td class="action-btns"><button onclick='editCustomer(${page},${i})'>Edit</button><button onclick='deleteCustomer(${page},${i})'>Delete</button><button onclick='viewCustomer(${page},${i})'>View</button></td></tr>` }); html+=`</table></div>`; document.getElementById('page').innerHTML=html; saveAll(); }
+  function renderPageData(page){ 
+    document.getElementById('banner').style.display='none'; // hide slider on pagination pages
+    let html=`<div class='table-container'><h3>Page ${page} Data</h3><button class='btn' onclick='addCustomer()'>Add Customer</button><table><tr><th>Name</th><th>Email</th><th>Customer Groups</th><th>Status</th><th>Date Added</th><th>Action</th></tr>`;
+    pageData[page].forEach((c,i)=>{ html+=`<tr><td>${c.name}</td><td>${c.email}</td><td>${c.group}</td><td>${c.status}</td><td>${c.date}</td><td class="action-btns"><button onclick='editCustomer(${page},${i})'>Edit</button><button onclick='deleteCustomer(${page},${i})'>Delete</button><button onclick='viewCustomer(${page},${i})'>View</button></td></tr>` });
+    html+=`</table></div>`;
+    document.getElementById('page').innerHTML=html;
+    saveAll(); 
+  }
 
-  // Initialize page
-  updateCart(); goHome(); renderPagination();
+  goHome();
 </script>
 </body>
 </html>
