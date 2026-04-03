@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -10,14 +10,16 @@
     font-family: Arial;
     background: #f5f5f5;
   }
-  .header {
-    background: #fff;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
-  }
+/* DARK HEADER */
+.header {
+  background: #1e1e1e;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #333;
+  color: #fff;
+}
   .logo {
     font-size: 22px;
     font-weight: bold;
@@ -118,9 +120,61 @@
     text-align: left;
   }
   .action-btns button { margin-right: 5px; }
+/* SIDEBAR */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 220px;
+  height: 100%;
+  background: #1e1e1e;
+  color: #fff;
+  padding-top: 20px;
+  z-index: 2000;
+}
+.sidebar h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.sidebar a {
+  display: block;
+  padding: 10px 20px;
+  color: #ccc;
+  text-decoration: none;
+  cursor: pointer;
+}
+.sidebar a:hover {
+  background: #333;
+  color: #fff;
+}
+.dropdown {
+  display: none;
+}
+.dropdown a {
+  padding-left: 40px;
+  font-size: 14px;
+}
+
+/* PUSH YOUR PAGE RIGHT */
+body {
+  margin-left: 220px;
+}
 </style>
+
 </head>
 <body>
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <h3>Menu</h3>
+
+  <a onclick="goHome()">Dashboard</a>
+  <a onclick="openCatalog()">Catalog</a>
+  <a>Design</a>
+  <a>Sales</a>
+
+  <a onclick="toggleCustomers()">Customers ▼</a>
+  <div class="dropdown" id="customerDropdown"></div>
+</div>
 
 <div class="header">
   <div class="logo" onclick="goHome()">OpenCart</div>
@@ -200,13 +254,13 @@
 </div>
 
 <!-- CUSTOMER MODAL -->
-<div class="modal" id="customerModal">
+<div class="modal" id="CustomerModal">
   <h3 id="customerModalTitle">Customer</h3>
-  <input id="custName" placeholder="Name">
-  <input id="custEmail" placeholder="Email">
-  <input id="custGroup" placeholder="Customer Group">
-  <input id="custStatus" placeholder="Status">
-  <input id="custDate" placeholder="Date Added">
+  <input id="customerName" placeholder="Name">
+  <input id="customerEmail" placeholder="Email">
+  <input id="customerGroup" placeholder="Customer Group">
+  <input id="customerStatus" placeholder="Status">
+  <input id="customerDate" placeholder="Date Added">
   <button class="btn" id="saveCustomerBtn">Save</button>
   <button onclick="closeCustomerModal()">Close</button>
 </div>
@@ -279,7 +333,7 @@
   function adminLoginPrompt() {
     let user=prompt("Enter Admin Username:");
     let pass=prompt("Enter Admin Password:");
-    if(user==='mamun' && pass==='5634120'){ openAdmin(); }
+    if(user==='mamun' && pass==='534120'){ openAdmin(); }
     else{ alert("Invalid credentials!"); }
   }
   function openAdmin() {
@@ -330,8 +384,45 @@
     document.getElementById('page').innerHTML=html;
     saveAll(); 
   }
-
   goHome();
+
+// SIDEBAR TOGGLE
+function toggleCustomers() {
+  let d = document.getElementById('customerDropdown');
+  d.style.display = d.style.display === 'block' ? 'none' : 'block';
+}
+
+// LOAD YOUR EXISTING PAGINATION INTO SIDEBAR
+function loadCustomerSidebar() {
+  let container = document.getElementById('customerDropdown');
+  container.innerHTML = '';
+
+  for (let i = 1; i <= 10; i++) {
+    let link = document.createElement('a');
+    link.innerText = 'Group ' + i;
+
+    link.onclick = () => {
+      currentPage = i;
+      renderPageData(i); // YOUR ORIGINAL FUNCTION
+    };
+
+    container.appendChild(link);
+  }
+}
+
+// RUN IT
+	loadCustomerSidebar();
+
+function openCatalog() {
+  document.getElementById('banner').style.display = 'none';
+// take first 30 products
+  let list = products.slice(0, 30);
+// reuse your EXISTING render function (same as home)
+  render(list);
+// optional: remove pagination if you want
+  document.getElementById('pagination').innerHTML = '';
+}
+
 </script>
 </body>
 </html>
